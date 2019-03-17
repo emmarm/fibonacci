@@ -27,7 +27,14 @@ func fib() func() int {
 
 func Fibonacci(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		digit := ps.ByName("digit")
-		if n, err := strconv.Atoi(digit); err == nil {
+		n, err := strconv.Atoi(digit)
+		if n > 93 {
+				fmt.Fprintf(w, "Please enter a smaller number")
+		} else if n < 1 {
+				fmt.Fprintf(w, "Number must be a positive integer")
+		} else if err != nil {
+				fmt.Fprintf(w, "%s is not an integer", digit)
+		} else {
 				num := fib()
 				for i := 0; i < n; i++ {
 						if i == n - 1 {
@@ -36,8 +43,6 @@ func Fibonacci(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 								fmt.Fprintf(w, "%d, ", num())
 						}
 				}
-		} else {
-				fmt.Fprintf(w, "%s is not an integer", digit)
 		}
 }
 
