@@ -1,25 +1,40 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
 
 class App extends Component {
+  state = {
+    number: 1,
+    response: "",
+    error: ""
+  };
+  setNumber = e => {
+    const number = e.target.value;
+
+    this.setState(() => ({ number }));
+  };
+  onSubmit = e => {
+    e.preventDefault();
+    fetch(`/api/fibonacci/${e.target[0].value}`)
+      .then(res => res.text())
+      .then(response => {
+        this.setState(() => ({ response }));
+      })
+      .catch(error => {
+        this.setState(() => ({ error }));
+      });
+  };
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <form onSubmit={this.onSubmit} method="get" action="">
+          <input
+            type="number"
+            value={this.state.number}
+            onChange={this.setNumber}
+          />
+          <button type="submit">Fibonaccisize!</button>
+        </form>
+        <p>{this.state.response}</p>
+        <p>{this.state.error}</p>
       </div>
     );
   }
