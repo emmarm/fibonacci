@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "go run ./server/main.go",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "go run ./server/main.go",
+    "client": "npm run start --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/mawarijo/6-degrees-test-project/issues"
   },
-  "homepage": "https://github.com/mawarijo/6-degrees-test-project#readme"
+  "homepage": "https://github.com/mawarijo/6-degrees-test-project#readme",
+  "dependencies": {
+    "concurrently": "^4.1.0"
+  }
 }
