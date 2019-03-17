@@ -6,6 +6,7 @@ import (
 		"net/http"
 		"log"
 		"strconv"
+		"encoding/json"
 )
 
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -25,25 +26,43 @@ func fib() func() int {
 		}
 }
 
+type Response struct {
+    Message   string		`json:"message"`
+    Error		  string 		`json:"error"`
+}
+
 func Fibonacci(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		digit := ps.ByName("digit")
 		n, err := strconv.Atoi(digit)
+		res := Response{
+			Message: "",
+			Error: ""}
+
 		if n > 93 {
-				fmt.Fprintf(w, "Please enter a smaller number")
+				res.Error = "Please enter a smaller number"
 		} else if n < 1 {
-				fmt.Fprintf(w, "Number must be a positive integer")
+				res.Error = "Number must be a positive integer"
 		} else if err != nil {
-				fmt.Fprintf(w, "%s is not an integer", digit)
+				res.Error = digit + "is not an integer"
 		} else {
 				num := fib()
 				for i := 0; i < n; i++ {
 						if i == n - 1 {
-								fmt.Fprintf(w, "%d", num())
+								res.Message += strconv.FormatInt(int64(num()), 10)
 						} else {
-								fmt.Fprintf(w, "%d, ", num())
+								res.Message += strconv.FormatInt(int64(num()), 10) + ", "
 						}
 				}
 		}
+
+		resJson, err := json.Marshal(res)
+		if err != nil {
+			panic(err)
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(resJson)
 }
 
 func main() {
