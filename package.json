@@ -1,0 +1,20 @@
+{
+  "name": "6-degrees-health",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "go run ./server/main.go",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mawarijo/6-degrees-test-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mawarijo/6-degrees-test-project/issues"
+  },
+  "homepage": "https://github.com/mawarijo/6-degrees-test-project#readme"
+}
