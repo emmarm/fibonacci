@@ -26,15 +26,15 @@ func fib() func() int {
 		}
 }
 
-type Response struct {
-    Message   string		`json:"message"`
-    Error		  string 		`json:"error"`
-}
-
 func Fibonacci(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		digit := ps.ByName("digit")
+
 		n, err := strconv.Atoi(digit)
-		res := Response{
+		type Response struct {
+				Message   string		`json:"message"`
+				Error		  string 		`json:"error"`
+		}
+		res := &Response{
 			Message: "",
 			Error: ""}
 
